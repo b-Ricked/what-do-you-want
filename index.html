@@ -77,6 +77,9 @@
 			white-space: nowrap;
 			box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 		}
+		@media (hover: none) {
+			.custom-tooltip { display: none !important; }
+		}
 </style>
 </head>
 
@@ -337,7 +340,7 @@
     window.onload = () => { updatePage(); };
 	
 	
-	// coppy function
+	// 1. Copy to clipboard function
 	function copyResults() {
 		const activeSection = document.getElementById('dynamic-content-section');
 		if (!activeSection || activeSection.style.display === "none") return;
@@ -354,7 +357,7 @@
 		});
 	}
 
-    // Dynamically resizes dropdown boxes to fit the text inside
+    // 2. Dynamically resizes dropdown boxes to fit the text inside
 	function resizer(el) {
 		const tempSpan = document.createElement("span");
 		tempSpan.style.visibility = "hidden";
@@ -368,32 +371,44 @@
 		document.body.removeChild(tempSpan);
 	}
 	
-	// Tooltip logic: makes the custom hover box follow the mouse
+	// 3. Tooltip logic: Only runs if the user has a mouse
 	const tooltip = document.getElementById('tooltip');
-    document.addEventListener('mousemove', (e) => {
-        tooltip.style.left = (e.clientX + 15) + 'px';
-        tooltip.style.top = (e.clientY + 15) + 'px';
-    });
-    document.addEventListener('mouseover', (e) => {
-        const target = e.target.closest('[title]');
-        if (target) {
-            if (target.id === 'shareButton' && target.style.display === 'none') return;
-            const titleText = target.getAttribute('title');
-            target.setAttribute('data-title', titleText);
-            target.removeAttribute('title');
-            tooltip.innerText = titleText;
-            tooltip.style.opacity = '1';
-        }
-    });
-    document.addEventListener('mouseout', (e) => {
-        const target = e.target.closest('[data-title]');
-        if (target) {
-            tooltip.style.opacity = '0';
-            const savedTitle = target.getAttribute('data-title');
-            target.setAttribute('title', savedTitle);
-            target.removeAttribute('data-title');
-        }
-    });
+
+    if (window.matchMedia("(hover: hover)").matches) {
+        
+        document.addEventListener('mousemove', (e) => {
+            tooltip.style.left = (e.clientX + 15) + 'px';
+            tooltip.style.top = (e.clientY + 15) + 'px';
+        });
+
+        document.addEventListener('mouseover', (e) => {
+            const target = e.target.closest('[title], [data-title]');
+            
+            if (target) {
+                // Ignore the share button if it's currently hidden
+                if (target.id === 'shareButton' && target.style.display === 'none') return;
+                
+                // Get text from either attribute
+                const text = target.getAttribute('title') || target.getAttribute('data-title');
+                
+                if (text) {
+                    // Move title to backup to prevent default browser tooltip
+                    target.setAttribute('data-title', text);
+                    target.removeAttribute('title');
+                    
+                    tooltip.innerText = text;
+                    tooltip.style.opacity = '1';
+                }
+            }
+        });
+
+        document.addEventListener('mouseout', (e) => {
+            const target = e.target.closest('[data-title]');
+            if (target) {
+                tooltip.style.opacity = '0';
+            }
+        });
+    }
 </script>
 </body>
 </html>
