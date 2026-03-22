@@ -144,7 +144,7 @@
 
 <!--first drop down-->
     <h1>What could we have
-        <select class="inline-dropdown" id="costSelector" onchange="updatePage()" title="Change the source of the funding">
+        <select class="inline-dropdown" id="costSelector" onchange="updatePage()" title="Change the source of funding">
             <option value="War">instead of war?</option>
             <option value="PAC">instead of super-PACs?</option>
             <option value="tax">with a wealth tax?</option>					
@@ -230,8 +230,8 @@
 <!--healthCare-->
 		<div id="healthCare-section" class="hidden content-section">
 			<ul style="font-weight: bold;font-size: 1.25rem">
-				<li><span class="display-box"></span> could cover Medicare for <span id="PeopleCoveredMedicade"></span> people.</li>
-				<li><span class="display-box"></span> could cover private insurance for <span id="PeopleCoveredNotMedicade"></span> people.</li>
+				<li><span class="display-box"></span> could cover Medicare for <span id="PeopleCoveredMedicare"></span> people.</li>
+				<li><span class="display-box"></span> could cover private insurance for <span id="PeopleCoveredNotMedicare"></span> people.</li>
 			</ul>
 		</div>
 	</div>
@@ -241,7 +241,7 @@
 		<button id="shareButton" 
 				onclick="copyResults()" 
 				style="display:none;" 
-				title="Copies results in plain english so you can paste the results anywhere!">
+				title="Copies the results in plain English so you can paste the results anywhere!">
 			Copy & Share These Results 🔗
 		</button>
 	</div>
@@ -343,8 +343,8 @@
         runMath(currentFund, 12000000, 40, 45000, 80, { built: 'elderlyBuilt', cap: 'elderlyCap', staff: 'elderlyStaff', yrs: 'eldYears' });
 
    // HealthCare & Environment specific logic
-        document.getElementById('PeopleCoveredMedicade').innerText = Math.round(currentFund / (185 * 12)).toLocaleString();
-        document.getElementById('PeopleCoveredNotMedicade').innerText = Math.round(currentFund / (450 * 12)).toLocaleString();
+        document.getElementById('PeopleCoveredMedicare').innerText = Math.round(currentFund / (185 * 12)).toLocaleString();
+        document.getElementById('PeopleCoveredNotMedicare').innerText = Math.round(currentFund / (450 * 12)).toLocaleString();
 
         let totalTrees = currentFund / 2;
         document.getElementById('numberOfTrees').innerText = formatBigNumber(totalTrees);
