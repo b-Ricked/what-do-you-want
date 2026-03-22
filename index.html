@@ -61,6 +61,12 @@
 			border: 1px solid #bbb;
 			background-color: white;
 		}
+		
+		.inline-dropdown:focus ~ #tooltip,
+		.nav-dropdown:focus ~ #tooltip {
+			opacity: 0 !important;
+			display: none !important;
+		}
 
 		/* TOOLTIP: The black box that follows your mouse */
 		.custom-tooltip {
@@ -384,15 +390,17 @@
         document.addEventListener('mouseover', (e) => {
             const target = e.target.closest('[title], [data-title]');
             
+            // FIX: If the dropdown is currently open/focused, don't show the tooltip
+            if (target && target.tagName === 'SELECT' && document.activeElement === target) {
+                return;
+            }
+
             if (target) {
-                // Ignore the share button if it's currently hidden
                 if (target.id === 'shareButton' && target.style.display === 'none') return;
                 
-                // Get text from either attribute
                 const text = target.getAttribute('title') || target.getAttribute('data-title');
                 
                 if (text) {
-                    // Move title to backup to prevent default browser tooltip
                     target.setAttribute('data-title', text);
                     target.removeAttribute('title');
                     
@@ -405,6 +413,13 @@
         document.addEventListener('mouseout', (e) => {
             const target = e.target.closest('[data-title]');
             if (target) {
+                tooltip.style.opacity = '0';
+            }
+        });
+
+        // NEW: The "Kill Switch" - Hide tooltip immediately when any dropdown is clicked
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.tagName === 'SELECT' || e.target.closest('.inline-dropdown, .nav-dropdown')) {
                 tooltip.style.opacity = '0';
             }
         });
