@@ -260,7 +260,14 @@
 	
 	function copyResults() {
 		const activeSection = document.getElementById('dynamic-content-section');
-		const shareString = `${activeSection.innerText.trim()}\n\nSources: https://b-ricked.github.io/what-do-you-want/`;
+		
+		// Grab the text and replace all the line breaks with a bullet and space
+		let rawText = activeSection.innerText.trim();
+		let compressedText = rawText.replace(/\n+/g, ' • ');
+		
+		// Build the final string to copy
+		const shareString = `Did you know? ${compressedText}\n\nCalculate your own at: https://b-ricked.github.io/what-do-you-want/`;
+		
 		navigator.clipboard.writeText(shareString).then(() => {
 			const btn = document.getElementById('shareButton');
 			btn.innerText = "Results Copied to Clipboard! ✅";
