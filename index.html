@@ -10,17 +10,15 @@
 		/* Global reset: ensures padding doesn't make boxes wider than 100% */
 		* {box-sizing: border-box;}
 		
-		/* DYNAMIC IMAGE: Starts hidden and slides up when 'image-visible' class is added */
 		#dynamicImage {
-			opacity: 0;
-			visibility: hidden; 
-			transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
-			transform: translateY(10px);
+			flex-shrink: 0;           /* CRITICAL: Stops Flexbox from squishing the image */
+			display: block;
+			margin: 20px auto;
 			max-width: 80%;
-			height: auto;
+			height: auto;             /* Maintains aspect ratio */
 			border-radius: 8px;
-			margin: 0px auto;
-			display: block; 
+			opacity: 0;               /* JS will change this to 1 when a category is picked */
+			transition: opacity 0.6s ease-in-out;
 		}
 		.image-visible {
 			opacity: 1 !important;
@@ -33,8 +31,10 @@
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			justify-content: center; /* Centers everything up and down */
+			min-height: 100vh;       /* Uses the full height of the screen */
 			margin: 0;
-			padding: 40px 20px; 
+			padding: 40px 20px;
 			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 			text-align: center;
 			background-color: #f9f9f9;
@@ -125,8 +125,9 @@
 		   <a href="pages/support.html" title="Send a suggestion or report a bug">Feedback</a> - 
 		   <a href="https://buymeacoffee.com/yourlink" title="Support the project!">Buy Me A Coffee</a> -	
 		   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=2s" title="Submit a formal complaint">Complaints</a> 
-		   
-		   <p style="margin-top: 5px; font-size: 0.66rem;"> I have no afiliation to anyone. There is no profit.</p>
+		</p>
+		<p style="margin-top: 5px; font-size: 0.7rem; color: #7f8c8d;"> 
+			I have no affiliation to anyone. There is no profit.
 		</p>
 	</footer>
 	
