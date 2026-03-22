@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="icon" type="image/svg+xml" href="pictures/bentSword.svg"> <!-- favicon-->
+	<link rel="icon" type="image/svg+xml" href="pictures/bentSword.svg">
     <title>What Do You Want?</title>
 	
-	
 <style>
+		/* Global reset: ensures padding doesn't make boxes wider than 100% */
 		* {box-sizing: border-box;}
 		
+		/* DYNAMIC IMAGE: Starts hidden and slides up when 'image-visible' class is added */
 		#dynamicImage {
 			opacity: 0;
 			visibility: hidden; 
@@ -26,18 +27,20 @@
 			visibility: visible !important;
 			transform: translateY(0) !important;
 		}
+
+		/* LAYOUT: Centers everything on the screen */
         body {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
 			margin: 0;
-			/* Changed from padding-top: 75px to a full padding set */
-			/* (Top: 75px, Right: 20px, Bottom: 40px, Left: 20px) */
-			padding: 40px 20px 40px 20px; 
+			padding: 40px 20px; 
 			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 			text-align: center;
 			background-color: #f9f9f9;
 		}
+
+		/* DROPDOWNS: Styling for the interactive menus */
 		.inline-dropdown {
 			display: inline-block;
 			font-size: 2rem;
@@ -45,11 +48,7 @@
 			border: 1px solid #bbb;
 			border-radius: 6px;
 			cursor: pointer;
-			margin-left:0px;
-			margin-right:0px;
-			margin-top:0px;
-			margin-bottom: 0px;
-			padding: 4px 8px; /* Added specific padding */
+			padding: 4px 8px;
 		}
 		
 		.nav-dropdown {
@@ -61,75 +60,17 @@
 			border-radius: 6px;
 			border: 1px solid #bbb;
 			background-color: white;
-			display: inline-block; /* Change from block to inline-block */
-		}
-		
-			/* This targets ONLY the boxes, not the options inside them */
-		.inline-dropdown:hover, 
-		.nav-dropdown:hover {
-			background-color: #f0f0f0; /* Light gray for the box only */
-			border-color: #828282;     /* grey border on hover */
-			transition: background-color 0.3s ease, border-color 0.3s ease;
 		}
 
-		/* This ensures the options stay white/default when the menu is open */
-		.inline-dropdown option, 
-		.nav-dropdown option {
-			background-color: white; 
-			color: #2c3e50;
-			
-			/* --- NEW STYLES --- */
-			font-size: 1rem;       /* Makes the text inside the list smaller */
-			border-radius: 10px;    /* Rounds the corners of the list items */
-			padding: 0px;          /* Adds some breathing room to the text */
-		}
-		
-        .content-section { max-width: 900px; }
-        ul { list-style-type: disc; padding-left: 20px; text-align: left; display: inline-block; }
-        li { margin-bottom: 8px; font-weight: bold; }
-        li li { font-weight: normal; margin-bottom: 4px; }
-        .hidden { display: none; 
-		}
-		.section-header {
-			font-weight: bold;
-			margin-bottom: 0px;
-			text-align: left;
-			font-size: 1.33rem;
-			text-decoration: underline;
-			text-underline-offset: 4px; /* Standardizing this to 4px for consistency */
-			width: 100%;
-		}
-		@media (max-width: 600px) {
-			h1 {
-				font-size: 1.5rem; /* Shrinks the main title slightly on phones */
-			}
-			.inline-dropdown {
-				font-size: 1.5rem; /* Shrinks the dropdown to match */
-			}
-		}
-		#shareButton {
-			background-color: #828282; /* "Cool Gray"*/
-			color: white;
-			padding: 10px 20px;
-			border: none;
-			border-radius: 6px;
-			font-weight: bold;
-			cursor: pointer;
-			font-size: 1rem;
-			transition: background-color 0.3s;
-		}
-
-		#shareButton:hover {
-			background-color: #9c9c9a;
-		}
+		/* TOOLTIP: The black box that follows your mouse */
 		.custom-tooltip {
 			position: fixed;
 			padding: 8px 12px;
-			background: #2c3e50; /* Dark slate to match your text color */
+			background: #2c3e50;
 			color: white;
 			border-radius: 6px;
 			font-size: 0.85rem;
-			pointer-events: none; /* Prevents the bubble from flickering under the mouse */
+			pointer-events: none;
 			opacity: 0;
 			transition: opacity 0.2s ease;
 			z-index: 9999;
@@ -140,9 +81,8 @@
 </head>
 
 <body>
-		<div id="tooltip" class="custom-tooltip"></div>
+	<div id="tooltip" class="custom-tooltip"></div>
 
-<!--first drop down-->
     <h1>What could we have
         <select class="inline-dropdown" id="costSelector" onchange="updatePage()" title="Change the source of funding">
             <option value="War">instead of war?</option>
@@ -151,7 +91,6 @@
         </select>
     </h1> 
 
-<!--second drop down-->
     <select class="nav-dropdown" id="careSelector" onchange="updatePage()" title="Choose a category to see the impact">
         <option value="" disabled selected>What do you care about?</option>
         <option value="hospitals">Hospitals</option>
@@ -162,247 +101,246 @@
         <option value="elderly">Elderly Care</option>
     </select>
 
-<!--content--- where all the typing goes-->
     <div class="content">
-	
-<!--hospitals-->
-		<div id="hospitals-section" class="hidden content-section">
-			
-				<p class="section-header">
-					<span class="display-box"></span> could build <span id="HospBuilt"></span> new hospitals and staff them for a year.
-				</p>
-				
-				<ul>
-					<li>Providing <span id="HospBeds"></span> hospital beds.</li>
-					<li>Employing <span id="HospPro"></span> medical professionals.</li>
-					<li>Every additional <span class="display-box2"></span> could pay those salaries for <span id="HospYears"></span> more years.</li>
-				</ul>
-			
-		</div>
-
-<!--childcare-->
-		<div id="childcare-section" class="hidden content-section">
-			<p class="section-header">
-				<span class="display-box"></span> could build <span id="DaycaresBuilt"></span> new daycare centers and staff them for a year.
-			</p>
-			<ul>
-				<li>Serving <span id="children"></span> children.</li>
-				<li>Employing <span id="chilPro"></span> workers.</li>
-				<li>Every additional <span class="display-box2"></span> could pay those salaries for <span id="chilYears"></span> more years.</li>
-			</ul>
-		</div>
-
-<!--animals-->
-		<div id="animals-section" class="hidden content-section">
-			<p class="section-header">
-				<span class="display-box"></span> could build <span id="aniBuilt"></span> new animal shelters and staff them for a year.
-			</p>
-			<ul>
-				<li>Serving <span id="ani"></span> million animals.</li>
-				<li>Employing <span id="aniPro"></span> shelter workers.</li>
-				<li>Every additional <span class="display-box2"></span> could pay those salaries for <span id="aniYears"></span> more years.</li>
-			</ul>
-		</div>
-
-<!--elderly-->
-		<div id="elderly-section" class="hidden content-section">
-			<p class="section-header">
-				<span class="display-box"></span> could build <span id="elderlyBuilt"></span> facilities and staff them for a year.
-			</p>
-			<ul>
-				<li>Housing <span id="elderlyCap"></span> seniors.</li>
-				<li>Employing <span id="elderlyStaff"></span> caregivers.</li>
-				<li>Every additional <span class="display-box2"></span> could pay those salaries for <span id="eldYears"></span> more years.</li>
-			</ul>
-		</div>
-
-<!--environment-->
-		<div id="environment-section" class="hidden content-section">
-			<p class="section-header">
-				<span class="display-box"></span> could plant <span id="numberOfTrees"></span> trees.
-			</p>
-			<ul>
-				<li>Restoring <span id="acresOfTrees"></span> acres of forest.</li>
-				<li>That is <span id="milesOfTrees"></span> square miles of trees.</li>
-			</ul>
-		</div>
-
-<!--healthCare-->
-		<div id="healthCare-section" class="hidden content-section">
-			<ul style="font-weight: bold;font-size: 1.25rem">
-				<li><span class="display-box"></span> could cover Medicare for <span id="PeopleCoveredMedicare"></span> people.</li>
-				<li><span class="display-box"></span> could cover private insurance for <span id="PeopleCoveredNotMedicare"></span> people.</li>
-			</ul>
-		</div>
+		<div id="dynamic-content-section" class="content-section" style="display:none;">
+            </div>
 	</div>
 	
-<!--CoppyButton-->
-	<div style="margin-top: 22px; margin-bottom: 13px;">
-		<button id="shareButton" 
-				onclick="copyResults()" 
-				style="display:none;" 
-				title="Copies the results in plain English so you can paste the results anywhere!">
+    <div style="margin-top: 22px; margin-bottom: 13px;">
+		<button id="shareButton" onclick="copyResults()" style="display:none;" title="Copies the results in plain English so you can paste the results anywhere!">
 			Copy & Share These Results 🔗
 		</button>
 	</div>
 
-<!--links-->
     <div style="margin-top: 30px; min-height: 40px;">
 		<a id="imageSourceLink" href="#" target="_blank" title="View the original source for this data" style="color: #7f8c8d; font-size: 0.85rem; text-decoration: underline; display: none; line-height: 1.2;" ></a>
-		
-<!--image-->	
+	</div>
 	<div style="margin-top: 3px; min-height: auto; margin-bottom: 13px;"> 
 		<img id="dynamicImage" src="pictures/costOfWar.png" alt="Visual Representation"> 
 	</div>
 
-
-
-<!--footer-->
-	<footer style="margin-top: 0px; margin-bottom: 20px; padding: 0; border-top: 1px solid #ddd; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto;">
-		<p style="margin-top: 5px;"> 
-		   <a href="pages/sources.html" title="View our data and methodology" style="color: #2c3e50; font-weight: bold; text-decoration: underline;">Sources</a> -	
-		   <a href="pages/support.html" title="Send a suggestion or report a bug" style="color: #2c3e50; font-weight: bold; text-decoration: underline;">Feedback</a> - 
-		   <a href="https://buymeacoffee.com/co7f3f62po" title="Support the project!" style="color: #2c3e50; font-weight: bold; text-decoration: underline;">Buy Me A Coffee</a> -	
-		   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=2s" title="Submit a formal complaint" style="color: #2c3e50; font-weight: bold; text-decoration: underline;">Complaints</a> 
+    <footer style="margin-top: 0px; margin-bottom: 20px; padding: 0; border-top: 1px solid #ddd; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto;">
+		<p style="margin-top: 5px;margin-bottom: 5px"> 
+		   <a href="pages/sources.html" title="View our data and methodology">Sources</a> -	
+		   <a href="pages/support.html" title="Send a suggestion or report a bug">Feedback</a> - 
+		   <a href="https://buymeacoffee.com/yourlink" title="Support the project!">Buy Me A Coffee</a> -	
+		   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=2s" title="Submit a formal complaint">Complaints</a> 
+		   
+		   <p style="margin-top: 5px; font-size: 0.66rem;"> I have no afiliation to anyone. There is no profit.</p>
 		</p>
 	</footer>
 	
 <script>
-    let message = "";
-    let measure = "";
-//------------------------------variables---------------------------
+// =========================================================================
+// SECTION 1: DATA DICTIONARIES (THE BRAINS)
+// =========================================================================
+
+    /* --- HOW TO ADD A NEW FUNDING SOURCE ---
+       1. Add an <option> to the HTML 'costSelector' dropdown above.
+       2. Add a new row below. 
+       - fund: The total amount of money (numbers only).
+       - message: The text that appears in the bold result header.
+       - measure: The unit of time/cycle (day, year, etc).
+    */
+    const fundingData = {
+        War: { 
+            fund: 2000000000, 
+            message: "1 day of war", 
+            measure: "day", 
+            img: "pictures/costOfWar.png", 
+            linkUrl: "https://www.csis.org/analysis/iran-war-cost-estimate-update-113-billion-day-6-165-billion-day-12", 
+            linkText: "Over 12 billion spent on the first 6 days- Source: CSIS" 
+        },
+        PAC: { 
+            fund: 5000000000, 
+            message: "1 campaign cycle", 
+            measure: "cycle", 
+            img: "pictures/PAC.png", 
+            linkUrl: "https://www.opensecrets.org/outside-spending/super_pacs", 
+            linkText: "$5 Billion spent on super-PACS in 2024- Source: OpenSecrets.org" 
+        },
+        tax: { 
+            fund: 442000000000, 
+            message: "1 year of wealth tax", 
+            measure: "year", 
+            img: "pictures/wealthTax.png", 
+            linkUrl: "https://www.sanders.senate.gov/wp-content/uploads/Wealth-Tax-Bill-Summary.pdf", 
+            linkText: "~$442 Billion in annual revenue.<br>Only taxing wealth over $1 Billion- Source: Senate Wealth Tax Proposals" 
+        }
+    };
+
+    /* --- HOW TO ADD A NEW THING TO FUND (CATEGORY) ---
+       1. Add an <option> to the HTML 'careSelector' dropdown above.
+       2. Add a new row below using 'type: standard'.
+       - cost: price of the building.
+       - staff: people per building.
+       - sal: salary per person.
+       - cap: capacity (beds/seats) per building.
+    */
+    const categoryData = {
+        hospitals: {
+            type: 'standard', cost: 50000000, staff: 200, sal: 83000, cap: 50, isMillion: false,
+            buildText: "new hospitals", verbCap: "Providing", capText: "hospital beds", staffText: "medical professionals"
+        },
+        childcare: {
+            type: 'standard', cost: 1100000, staff: 7, sal: 32000, cap: 70, isMillion: false,
+            buildText: "new daycare centers", verbCap: "Serving", capText: "children", staffText: "workers"
+        },
+        animals: {
+            type: 'standard', cost: 1000000, staff: 8, sal: 30000, cap: 1500, isMillion: true,
+            buildText: "new animal shelters", verbCap: "Serving", capText: "million animals", staffText: "shelter workers"
+        },
+        elderly: {
+            type: 'standard', cost: 12000000, staff: 40, sal: 45000, cap: 80, isMillion: false,
+            buildText: "facilities", verbCap: "Housing", capText: "seniors", staffText: "caregivers"
+        },
+        environment: { type: 'environment' },
+        healthCare: { type: 'healthCare' }
+    };
+
+// =========================================================================
+// SECTION 2: THE ENGINE (PROCESSING THE CHOICE)
+// =========================================================================
+
     function updatePage() {
+		// 1. Get current values from the dropdowns
 		const costSelection = document.getElementById('costSelector').value;
 		const careSelection = document.getElementById('careSelector').value;
-		resizer(costSelector);
-		resizer(careSelector);
-		const displayImg = document.getElementById('dynamicImage');
+		
+		// 2. Adjust dropdown widths to fit the new text
+		resizer(document.getElementById('costSelector'));
+		resizer(document.getElementById('careSelector'));
+		
+		// 3. Find our UI 'targets'
+        const displayImg = document.getElementById('dynamicImage');
 		const sourceLink = document.getElementById('imageSourceLink');
+        const contentContainer = document.getElementById('dynamic-content-section');
 
-		let currentFund = 0;
-		
-//Dropdown 1 logic. 
-		if (costSelection === 'War') { 
-			currentFund = 2000000000; 
-			message = "1 day of war"; 
-			measure = "day";
-			displayImg.src = "pictures/costOfWar.png";
-			sourceLink.href = "https://www.csis.org/analysis/iran-war-cost-estimate-update-113-billion-day-6-165-billion-day-12"; 
-			sourceLink.innerHTML = "Over 12 billion spent on the first 6 days- Source: CSIS";
-		}
-		
-	//PAC.
-		else if (costSelection === 'PAC') { 
-			currentFund = 5000000000; 
-			message = "1 campaign cycle"; 
-			measure = "cycle";
-			displayImg.src = "pictures/PAC.png";
-			sourceLink.href = "https://www.opensecrets.org/outside-spending/super_pacs";
-			sourceLink.innerHTML = "$5 Billion spent on super-PACS in 2024- Source: OpenSecrets.org";
-		}
-		
-	//tax
-		else if (costSelection === 'tax') { 
-			currentFund = 442000000000; 
-			message = "1 year of wealth tax"; 
-			measure = "year";
-			displayImg.src = "pictures/wealthTax.png";
-			sourceLink.href = "https://www.sanders.senate.gov/wp-content/uploads/Wealth-Tax-Bill-Summary.pdf";
-			sourceLink.innerHTML = "~$442 Billion in annual revenue.<br>Only taxing wealth over $1 Billion- Source: Senate Wealth Tax Proposals";
-		}
+        // 4. Fetch the selected money data from the dictionary
+        const currentSource = fundingData[costSelection];
+        const fund = currentSource.fund;
+        const message = currentSource.message;
+        const measure = currentSource.measure;
 
-		// 2. Toggling Visibility: ONLY show link/image if a category is chosen
-		document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
-		
-		if (careSelection) {
-			document.getElementById('shareButton').style.display = "inline-block";
-		}
-		
-//Dropdown2 logic	
-		if (careSelection) {
-			// Show the text section
-			document.getElementById(careSelection + '-section').classList.remove('hidden');
-			
-			// Show the image and the source link together
-			displayImg.classList.add('image-visible');
-			sourceLink.style.display = "inline-block"; 
-		} else {
-			// Keep them hidden if nothing is selected
-			sourceLink.style.display = "none";
-		}
+        // 5. Update the image and citation link
+        displayImg.src = currentSource.img;
+        sourceLink.href = currentSource.linkUrl;
+        sourceLink.innerHTML = currentSource.linkText;
 
-		// 3. Update Labels
-		for (let box of document.getElementsByClassName('display-box')) { box.innerText = message; }
-		for (let box of document.getElementsByClassName('display-box2')) { box.innerText = measure; }
+		// 6. If no category is picked yet, stop here and hide results
+		if (!careSelection) {
+            sourceLink.style.display = "none";
+            contentContainer.style.display = "none";
+            return;
+        }
 
-        // 4. Run calculations
-		//  costToBuild, #employedPer, salaryPerEmployee, numberServedPerBuilding  -->output-->numberBuilt, totalServed, staffEmployed, yearsOfSalaryCovered
-        runMath(currentFund, 50000000, 200, 83000, 50, { built: 'HospBuilt', cap: 'HospBeds', staff: 'HospPro', yrs: 'HospYears' }); 
-        runMath(currentFund, 1100000, 7, 32000, 70, { built: 'DaycaresBuilt', cap: 'children', staff: 'chilPro', yrs: 'chilYears' });
-        runMath(currentFund, 1000000, 8, 30000, 1500, { built: 'aniBuilt', cap: 'ani', staff: 'aniPro', yrs: 'aniYears' }, true); //true for millions
-        runMath(currentFund, 12000000, 40, 45000, 80, { built: 'elderlyBuilt', cap: 'elderlyCap', staff: 'elderlyStaff', yrs: 'eldYears' });
+        // 7. Show the UI elements
+        document.getElementById('shareButton').style.display = "inline-block";
+        displayImg.classList.add('image-visible');
+        sourceLink.style.display = "inline-block"; 
+        contentContainer.style.display = "block";
 
-   // HealthCare & Environment specific logic
-        document.getElementById('PeopleCoveredMedicare').innerText = Math.round(currentFund / (185 * 12)).toLocaleString();
-        document.getElementById('PeopleCoveredNotMedicare').innerText = Math.round(currentFund / (450 * 12)).toLocaleString();
+        // 8. Decide which HTML generator function to use
+        const currentCare = categoryData[careSelection];
+        let generatedHTML = "";
 
-        let totalTrees = currentFund / 2;
-        document.getElementById('numberOfTrees').innerText = formatBigNumber(totalTrees);
-        document.getElementById('acresOfTrees').innerText = Math.round(totalTrees / 500).toLocaleString();
-        document.getElementById('milesOfTrees').innerText = Math.round((totalTrees / 500) * 0.00156).toLocaleString();
+        if (currentCare.type === 'standard') {
+            generatedHTML = buildStandardHTML(fund, message, measure, currentCare);
+        } else if (currentCare.type === 'environment') {
+            generatedHTML = buildEnvironmentHTML(fund, message);
+        } else if (currentCare.type === 'healthCare') {
+            generatedHTML = buildHealthCareHTML(fund, message);
+        }
+
+        // 9. Put the results on the screen
+        contentContainer.innerHTML = generatedHTML;
     }
 
-// Math function
-    function runMath(fund, cost, staff, sal, cap, ids, isMillion = false) {
-		let unitTotal = cost + (staff * sal);
+// =========================================================================
+// SECTION 3: HTML GENERATORS (THE MATH)
+// =========================================================================
+
+    // Standard Math: (Construction + Salaries) / Total Fund
+    function buildStandardHTML(fund, message, measure, careData) {
+		let unitTotal = careData.cost + (careData.staff * careData.sal);
 		let rawBuilt = fund / unitTotal;
 		let built = Math.floor(rawBuilt);
 
-		const builtEl = document.getElementById(ids.built);
+        // Handle cases where 1 full unit cannot be built
+        let builtStr = built >= 1 ? built.toLocaleString() : "0 (covers " + (rawBuilt * 100).toFixed(1) + "% of one)";
+        let capStr = "0", staffStr = "0", yrsStr = "0";
+
 		if (built >= 1) {
-			builtEl.innerText = built.toLocaleString();
-			let finalCap = built * cap;
-			document.getElementById(ids.cap).innerText = isMillion ? (finalCap / 1000000).toFixed(2) : finalCap.toLocaleString();
-			document.getElementById(ids.staff).innerText = (built * staff).toLocaleString();
-			
-			// --- FIXED LINE BELOW ---
-			// This now calculates how many years ONE extra fund cycle (the currentFund) 
-			// would pay the salaries for the staff of the buildings you just built.
-			let annualStaffCost = built * staff * sal;
-			document.getElementById(ids.yrs).innerText = Math.floor(fund / annualStaffCost).toLocaleString();
-			
-		} else {
-			builtEl.innerText = "0 (covers " + (rawBuilt * 100).toFixed(1) + "% of one)";
-			document.getElementById(ids.cap).innerText = "0";
-			document.getElementById(ids.staff).innerText = "0";
-			document.getElementById(ids.yrs).innerText = "0";
+			let finalCap = built * careData.cap;
+			capStr = careData.isMillion ? (finalCap / 1000000).toFixed(2) : finalCap.toLocaleString();
+			staffStr = (built * careData.staff).toLocaleString();
+			let annualStaffCost = built * careData.staff * careData.sal;
+			yrsStr = Math.floor(fund / annualStaffCost).toLocaleString();
 		}
+
+        return `
+            <p class="section-header">
+                <span class="display-box">${message}</span> could build ${builtStr} ${careData.buildText} and staff them for a year.
+            </p>
+            <ul>
+                <li>${careData.verbCap} ${capStr} ${careData.capText}.</li>
+                <li>Employing ${staffStr} ${careData.staffText}.</li>
+                <li>Every additional <span class="display-box2">${measure}</span> could pay those salaries for ${yrsStr} more years.</li>
+            </ul>
+        `;
 	}
 
+    // Custom Logic for Trees
+    function buildEnvironmentHTML(fund, message) {
+        let totalTrees = fund / 2; // $2 per tree
+        let formattedTrees = formatBigNumber(totalTrees);
+        let acres = Math.round(totalTrees / 500).toLocaleString();
+        let miles = Math.round((totalTrees / 500) * 0.00156).toLocaleString();
+
+        return `
+            <p class="section-header">
+				<span class="display-box">${message}</span> could plant ${formattedTrees} trees.
+			</p>
+			<ul>
+				<li>Restoring ${acres} acres of forest.</li>
+				<li>That is ${miles} square miles of trees.</li>
+			</ul>
+        `;
+    }
+
+    // Custom Logic for Healthcare
+    function buildHealthCareHTML(fund, message) {
+        let medicare = Math.round(fund / (185 * 12)).toLocaleString();
+        let privateIns = Math.round(fund / (450 * 12)).toLocaleString();
+
+        return `
+            <ul style="font-weight: bold;font-size: 1.25rem">
+				<li><span class="display-box">${message}</span> could cover Medicare for ${medicare} people.</li>
+				<li><span class="display-box">${message}</span> could cover private insurance for ${privateIns} people.</li>
+			</ul>
+        `;
+    }
+
+    // Helper: Turns 1000000000 into "1.0 Billion"
     function formatBigNumber(num) {
         if (num >= 1000000000) return (num / 1000000000).toFixed(1) + " Billion";
         if (num >= 1000000) return (num / 1000000).toFixed(1) + " Million";
         return num.toLocaleString();
     }
 
-    window.onload = () => {
-		updatePage(); // Runs your math and logic
-		resizer(document.getElementById('costSelector')); // Sets initial width
-		resizer(document.getElementById('careSelector')); // Sets initial width
-	};
+// =========================================================================
+// SECTION 4: UTILITIES (COPY, RESIZE, TOOLTIPS)
+// =========================================================================
 
-// Copy function	
+    // Runs logic when page first loads
+    window.onload = () => { updatePage(); };
+	
 	function copyResults() {
-		const activeSection = document.querySelector('.content-section:not(.hidden)');
-		if (!activeSection) return;
+		const activeSection = document.getElementById('dynamic-content-section');
+		if (!activeSection || activeSection.style.display === "none") return;
 
 		let mainText = activeSection.innerText.trim().replace(/\n\s*\n/g, '\n');
-        
-        // --- NEW ADDITION ---
-        // Change this URL to your actual live website address once you launch
         const sourcesUrl = "https://b-ricked.github.io/what-do-you-want/"; 
-		
-        // Appends the link with a couple of line breaks for clean formatting
         const shareString = `${mainText}\n\nSources: ${sourcesUrl}`;
 
 		navigator.clipboard.writeText(shareString).then(() => {
@@ -413,75 +351,45 @@
 		});
 	}
 
-// dropdown resizer
+    // Dynamically resizes dropdown boxes to fit the text inside
 	function resizer(el) {
-		// 1. Create a temporary span to measure the text
 		const tempSpan = document.createElement("span");
 		tempSpan.style.visibility = "hidden";
 		tempSpan.style.position = "absolute";
 		tempSpan.style.whiteSpace = "pre";
-		
-		// 2. Copy the font style from the dropdown so the measurement is accurate
 		const style = window.getComputedStyle(el);
 		tempSpan.style.font = style.font;
-		tempSpan.style.fontSize = style.fontSize;
-		tempSpan.style.fontWeight = style.fontWeight;
-		tempSpan.style.fontFamily = style.fontFamily;
-		
-		// 3. Get the text of the CURRENTLY selected option
 		tempSpan.innerText = el.options[el.selectedIndex].text;
-		
 		document.body.appendChild(tempSpan);
-		
-		// 4. Set the width (adding ~40px for the dropdown arrow and padding)
 		el.style.width = (tempSpan.offsetWidth + 40) + "px";
-		
 		document.body.removeChild(tempSpan);
 	}
 	
+	// Tooltip logic: makes the custom hover box follow the mouse
 	const tooltip = document.getElementById('tooltip');
-
-//EventListeners
     document.addEventListener('mousemove', (e) => {
         tooltip.style.left = (e.clientX + 15) + 'px';
         tooltip.style.top = (e.clientY + 15) + 'px';
     });
-
-//Universal Hover Logic (Consolidated)
     document.addEventListener('mouseover', (e) => {
         const target = e.target.closest('[title]');
-        
         if (target) {
-            // Safety: Don't show for the shareButton if it is hidden
             if (target.id === 'shareButton' && target.style.display === 'none') return;
-
             const titleText = target.getAttribute('title');
-            
-            // Swap to data-title to hide the browser's default yellow box
             target.setAttribute('data-title', titleText);
             target.removeAttribute('title');
-            
             tooltip.innerText = titleText;
             tooltip.style.opacity = '1';
         }
     });
-
-// 3. Universal Hide Logic
     document.addEventListener('mouseout', (e) => {
         const target = e.target.closest('[data-title]');
         if (target) {
             tooltip.style.opacity = '0';
-            
-            // Restore the title attribute
             const savedTitle = target.getAttribute('data-title');
             target.setAttribute('title', savedTitle);
             target.removeAttribute('data-title');
         }
-    });
-
-// 4. Mobile Support
-    document.addEventListener('touchstart', () => { 
-        tooltip.style.opacity = '0'; 
     });
 </script>
 </body>
