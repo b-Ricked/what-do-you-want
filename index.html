@@ -336,7 +336,7 @@
 		for (let box of document.getElementsByClassName('display-box2')) { box.innerText = measure; }
 
         // 4. Run calculations
-		//  costToBuild, #employedPer, salaryPerEmplyee, numberServedPerBuilding  -->output-->numberBuilt, totalServed, staffEmplyed, yearsOfSalaryCovered
+		//  costToBuild, #employedPer, salaryPerEmployee, numberServedPerBuilding  -->output-->numberBuilt, totalServed, staffEmplyed, yearsOfSalaryCovered
         runMath(currentFund, 50000000, 200, 83000, 50, { built: 'HospBuilt', cap: 'HospBeds', staff: 'HospPro', yrs: 'HospYears' }); 
         runMath(currentFund, 1100000, 7, 32000, 70, { built: 'DaycaresBuilt', cap: 'children', staff: 'chilPro', yrs: 'chilYears' });
         runMath(currentFund, 1000000, 8, 30000, 1500, { built: 'aniBuilt', cap: 'ani', staff: 'aniPro', yrs: 'aniYears' }, true); //true for millions
