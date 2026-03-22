@@ -7,17 +7,17 @@
     <title>What Do You Want?</title>
 	
 <style>
-		/* Global reset: ensures padding doesn't make boxes wider than 100% */
+		/* Global reset */
 		* {box-sizing: border-box;}
 		
 		#dynamicImage {
-			flex-shrink: 0;           /* CRITICAL: Stops Flexbox from squishing the image */
+			flex-shrink: 0;           
 			display: block;
 			margin: 20px auto;
 			max-width: 80%;
-			height: auto;             /* Maintains aspect ratio */
+			height: auto;             
 			border-radius: 8px;
-			opacity: 0;               /* JS will change this to 1 when a category is picked */
+			opacity: 0;               
 			transition: opacity 0.6s ease-in-out;
 		}
 		.image-visible {
@@ -26,29 +26,28 @@
 			transform: translateY(0) !important;
 		}
 
-		/* LAYOUT: Centers everything on the screen but allows natural scrolling */
+		/* LAYOUT: Fixed top-start alignment for mobile/desktop scaling */
         body {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			justify-content: flex-start; /* Prevents top cut-off on small screens */
+			justify-content: flex-start; 
 			min-height: 100vh;       
 			margin: 0;
-			padding: 5vh 20px 40px 20px; /* Added breathing room at the top */
+			padding: 5vh 20px 40px 20px; 
 			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 			text-align: center;
 			background-color: #f9f9f9;
 		}
 		
-		/* This only targets the bold summary sentence */
+		/* The Bold Summary Sentence */
 		.section-header strong {
-			font-size: 1.4rem;  /* Makes the text about 40% larger */
+			font-size: 1.4rem;  
 			line-height: 1.3;   
 			display: inline-block; 
-			margin-bottom: 0px; /* Kept at 0px per your request */
+			margin-bottom: 0px; 
 		}
 
-		/* DROPDOWNS: Styling for the interactive menus */
 		.inline-dropdown {
 			display: inline-block;
 			font-size: 2rem;
@@ -70,13 +69,7 @@
 			background-color: white;
 		}
 		
-		.inline-dropdown:focus ~ #tooltip,
-		.nav-dropdown:focus ~ #tooltip {
-			opacity: 0 !important;
-			display: none !important;
-		}
-
-		/* TOOLTIP: The black box that follows your mouse */
+		/* Custom Tooltip Styling */
 		.custom-tooltip {
 			position: fixed;
 			padding: 8px 12px;
@@ -86,7 +79,7 @@
 			font-size: 0.85rem;
 			pointer-events: none;
 			opacity: 0;
-			transition: opacity 0.2s ease;
+			transition: opacity 0.1s ease; /* Faster transition for better feel */
 			z-index: 9999;
 			white-space: nowrap;
 			box-shadow: 0 2px 10px rgba(0,0,0,0.2);
@@ -148,77 +141,31 @@
 	</footer>
 	
 <script>
-// =========================================================================
-// SECTION 1: DATA DICTIONARIES (THE BRAINS)
-// =========================================================================
-
     const fundingData = {
-        War: { 
-            fund: 2000000000, 
-            message: "1 day of war", 
-            measure: "day", 
-            img: "pictures/costOfWar.png", 
-            linkUrl: "https://www.csis.org/analysis/iran-war-cost-estimate-update-113-billion-day-6-165-billion-day-12", 
-            linkText: "Over 12 billion spent on the first 6 days- Source: CSIS" 
-        },
-        PAC: { 
-            fund: 5000000000, 
-            message: "1 campaign cycle", 
-            measure: "cycle", 
-            img: "pictures/PAC.png", 
-            linkUrl: "https://www.opensecrets.org/outside-spending/super_pacs", 
-            linkText: "$5 Billion spent on super-PACS in 2024- Source: OpenSecrets.org" 
-        },
-        tax: { 
-            fund: 442000000000, 
-            message: "1 year of wealth tax", 
-            measure: "year", 
-            img: "pictures/wealthTax.png", 
-            linkUrl: "https://www.sanders.senate.gov/wp-content/uploads/Wealth-Tax-Bill-Summary.pdf", 
-            linkText: "~$442 Billion in annual revenue.<br>Only taxing wealth over $1 Billion- Source: Senate Wealth Tax Proposals" 
-        }
+        War: { fund: 2000000000, message: "1 day of war", measure: "day", img: "pictures/costOfWar.png", linkUrl: "https://www.csis.org/analysis/iran-war-cost-estimate-update-113-billion-day-6-165-billion-day-12", linkText: "Over 12 billion spent on the first 6 days- Source: CSIS" },
+        PAC: { fund: 5000000000, message: "1 campaign cycle", measure: "cycle", img: "pictures/PAC.png", linkUrl: "https://www.opensecrets.org/outside-spending/super_pacs", linkText: "$5 Billion spent on super-PACS in 2024- Source: OpenSecrets.org" },
+        tax: { fund: 442000000000, message: "1 year of wealth tax", measure: "year", img: "pictures/wealthTax.png", linkUrl: "https://www.sanders.senate.gov/wp-content/uploads/Wealth-Tax-Bill-Summary.pdf", linkText: "~$442 Billion in annual revenue. Only taxing wealth over $1 Billion- Source: Senate Wealth Tax Proposals" }
     };
 
     const categoryData = {
-        hospitals: {
-            type: 'standard', cost: 50000000, staff: 200, sal: 83000, cap: 50, isMillion: false,
-            buildText: "new hospitals", verbCap: "Providing", capText: "hospital beds", staffText: "medical professionals"
-        },
-        childcare: {
-            type: 'standard', cost: 1100000, staff: 7, sal: 32000, cap: 70, isMillion: false,
-            buildText: "new daycare centers", verbCap: "Serving", capText: "children", staffText: "workers"
-        },
-        animals: {
-            type: 'standard', cost: 1000000, staff: 8, sal: 30000, cap: 1500, isMillion: true,
-            buildText: "new animal shelters", verbCap: "Serving", capText: "million animals", staffText: "shelter workers"
-        },
-        elderly: {
-            type: 'standard', cost: 12000000, staff: 40, sal: 45000, cap: 80, isMillion: false,
-            buildText: "facilities", verbCap: "Housing", capText: "seniors", staffText: "caregivers"
-        },
+        hospitals: { type: 'standard', cost: 50000000, staff: 200, sal: 83000, cap: 50, isMillion: false, buildText: "new hospitals", verbCap: "Providing", capText: "hospital beds", staffText: "medical professionals" },
+        childcare: { type: 'standard', cost: 1100000, staff: 7, sal: 32000, cap: 70, isMillion: false, buildText: "new daycare centers", verbCap: "Serving", capText: "children", staffText: "workers" },
+        animals: { type: 'standard', cost: 1000000, staff: 8, sal: 30000, cap: 1500, isMillion: true, buildText: "new animal shelters", verbCap: "Serving", capText: "million animals", staffText: "shelter workers" },
+        elderly: { type: 'standard', cost: 12000000, staff: 40, sal: 45000, cap: 80, isMillion: false, buildText: "facilities", verbCap: "Housing", capText: "seniors", staffText: "caregivers" },
         environment: { type: 'environment' },
         healthCare: { type: 'healthCare' }
     };
 
-// =========================================================================
-// SECTION 2: THE ENGINE (PROCESSING THE CHOICE)
-// =========================================================================
-
     function updatePage() {
 		const costSelection = document.getElementById('costSelector').value;
 		const careSelection = document.getElementById('careSelector').value;
-		
 		resizer(document.getElementById('costSelector'));
 		resizer(document.getElementById('careSelector'));
 		
         const displayImg = document.getElementById('dynamicImage');
 		const sourceLink = document.getElementById('imageSourceLink');
         const contentContainer = document.getElementById('dynamic-content-section');
-
         const currentSource = fundingData[costSelection];
-        const fund = currentSource.fund;
-        const message = currentSource.message;
-        const measure = currentSource.measure;
 
         displayImg.src = currentSource.img;
         sourceLink.href = currentSource.linkUrl;
@@ -237,76 +184,37 @@
 
         const currentCare = categoryData[careSelection];
         let generatedHTML = "";
-
-        if (currentCare.type === 'standard') {
-            generatedHTML = buildStandardHTML(fund, message, measure, currentCare);
-        } else if (currentCare.type === 'environment') {
-            generatedHTML = buildEnvironmentHTML(fund, message);
-        } else if (currentCare.type === 'healthCare') {
-            generatedHTML = buildHealthCareHTML(fund, message);
-        }
+        if (currentCare.type === 'standard') generatedHTML = buildStandardHTML(currentSource.fund, currentSource.message, currentSource.measure, currentCare);
+        else if (currentCare.type === 'environment') generatedHTML = buildEnvironmentHTML(currentSource.fund, currentSource.message);
+        else if (currentCare.type === 'healthCare') generatedHTML = buildHealthCareHTML(currentSource.fund, currentSource.message);
 
         contentContainer.innerHTML = generatedHTML;
     }
 
-// =========================================================================
-// SECTION 3: HTML GENERATORS (THE MATH)
-// =========================================================================
-
     function buildStandardHTML(fund, message, measure, careData) {
 		let unitTotal = careData.cost + (careData.staff * careData.sal);
-		let rawBuilt = fund / unitTotal;
-		let built = Math.floor(rawBuilt);
-
-        let builtStr = built >= 1 ? built.toLocaleString() : "0 (covers " + (rawBuilt * 100).toFixed(1) + "% of one)";
+		let built = Math.floor(fund / unitTotal);
+        let builtStr = built >= 1 ? built.toLocaleString() : "0 (covers " + ((fund / unitTotal) * 100).toFixed(1) + "% of one)";
         let capStr = "0", staffStr = "0", yrsStr = "0";
 
 		if (built >= 1) {
-			let finalCap = built * careData.cap;
-			capStr = careData.isMillion ? (finalCap / 1000000).toFixed(2) : finalCap.toLocaleString();
+			capStr = careData.isMillion ? ((built * careData.cap) / 1000000).toFixed(2) : (built * careData.cap).toLocaleString();
 			staffStr = (built * careData.staff).toLocaleString();
-			let annualStaffCost = built * careData.staff * careData.sal;
-			yrsStr = Math.floor(fund / annualStaffCost).toLocaleString();
+			yrsStr = Math.floor(fund / (built * careData.staff * careData.sal)).toLocaleString();
 		}
 
-        return `
-            <p class="section-header">
-                <strong><span class="display-box">${message}</span> could build ${builtStr} ${careData.buildText} and staff them for a year.</strong>
-            </p>
-            <ul>
-                <li>${careData.verbCap} ${capStr} ${careData.capText}.</li>
-                <li>Employing ${staffStr} ${careData.staffText}.</li>
-                <li>Every additional <span class="display-box2">${measure}</span> could pay those salaries for ${yrsStr} more years.</li>
-            </ul>
-        `;
+        return `<p class="section-header"><strong><span class="display-box">${message}</span> could build ${builtStr} ${careData.buildText} and staff them for a year.</strong></p>
+                <ul><li>${careData.verbCap} ${capStr} ${careData.capText}.</li><li>Employing ${staffStr} ${careData.staffText}.</li><li>Every additional <span class="display-box2">${measure}</span> could pay those salaries for ${yrsStr} more years.</li></ul>`;
 	}
 
     function buildEnvironmentHTML(fund, message) {
         let totalTrees = fund / 2;
-        let formattedTrees = formatBigNumber(totalTrees);
-        let acres = Math.round(totalTrees / 500).toLocaleString();
-        let miles = Math.round((totalTrees / 500) * 0.00156).toLocaleString();
-
-        return `
-            <p class="section-header">
-				<strong><span class="display-box">${message}</span> could plant ${formattedTrees} trees.</strong>
-			</p>
-			<ul>
-				<li>Restoring ${acres} acres of forest.</li>
-				<li>That is ${miles} square miles of trees.</li>
-			</ul>
-        `;
+        return `<p class="section-header"><strong><span class="display-box">${message}</span> could plant ${formatBigNumber(totalTrees)} trees.</strong></p>
+                <ul><li>Restoring ${Math.round(totalTrees / 500).toLocaleString()} acres of forest.</li><li>That is ${Math.round((totalTrees / 500) * 0.00156).toLocaleString()} square miles of trees.</li></ul>`;
     }
 
     function buildHealthCareHTML(fund, message) {
-        let medicare = Math.round(fund / (185 * 12)).toLocaleString();
-        let privateIns = Math.round(fund / (450 * 12)).toLocaleString();
-
-        return `
-            <p class="section-header">
-				<strong><span class="display-box">${message}</span> could cover Medicare for ${medicare} people or private insurance for ${privateIns} people.</strong>
-			</p>
-        `;
+        return `<p class="section-header"><strong><span class="display-box">${message}</span> could cover Medicare for ${Math.round(fund / (185 * 12)).toLocaleString()} people or private insurance for ${Math.round(fund / (450 * 12)).toLocaleString()} people.</strong></p>`;
     }
 
     function formatBigNumber(num) {
@@ -315,35 +223,22 @@
         return num.toLocaleString();
     }
 
-// =========================================================================
-// SECTION 4: UTILITIES (COPY, RESIZE, TOOLTIPS)
-// =========================================================================
-
     window.onload = () => { updatePage(); };
 	
 	function copyResults() {
 		const activeSection = document.getElementById('dynamic-content-section');
-		if (!activeSection || activeSection.style.display === "none") return;
-
-		let mainText = activeSection.innerText.trim().replace(/\n\s*\n/g, '\n');
-        const sourcesUrl = "https://b-ricked.github.io/what-do-you-want/"; 
-        const shareString = `${mainText}\n\nSources: ${sourcesUrl}`;
-
+		const shareString = `${activeSection.innerText.trim()}\n\nSources: https://b-ricked.github.io/what-do-you-want/`;
 		navigator.clipboard.writeText(shareString).then(() => {
 			const btn = document.getElementById('shareButton');
-			const originalText = btn.innerText;
 			btn.innerText = "Results Copied to Clipboard! ✅";
-			setTimeout(() => { btn.innerText = originalText; }, 5000);
+			setTimeout(() => { btn.innerText = "Copy & Share These Results 🔗"; }, 5000);
 		});
 	}
 
 	function resizer(el) {
 		const tempSpan = document.createElement("span");
-		tempSpan.style.visibility = "hidden";
-		tempSpan.style.position = "absolute";
-		tempSpan.style.whiteSpace = "pre";
-		const style = window.getComputedStyle(el);
-		tempSpan.style.font = style.font;
+		tempSpan.style.visibility = "hidden"; tempSpan.style.position = "absolute"; tempSpan.style.whiteSpace = "pre";
+		tempSpan.style.font = window.getComputedStyle(el).font;
 		tempSpan.innerText = el.options[el.selectedIndex].text;
 		document.body.appendChild(tempSpan);
 		el.style.width = (tempSpan.offsetWidth + 40) + "px";
@@ -353,28 +248,23 @@
 	const tooltip = document.getElementById('tooltip');
 
     if (window.matchMedia("(hover: hover)").matches) {
-        
         document.addEventListener('mousemove', (e) => {
             tooltip.style.left = (e.clientX + 15) + 'px';
             tooltip.style.top = (e.clientY + 15) + 'px';
         });
 
         document.addEventListener('mouseover', (e) => {
-            const target = e.target.closest('[title], [data-title]');
-            
-            if (target && target.tagName === 'SELECT' && document.activeElement === target) {
-                return;
-            }
+            // FIX: Check if we are currently focused on a select menu. 
+            // If the user is interacting with a dropdown, do not show tooltip.
+            if (document.activeElement.tagName === 'SELECT') return;
 
+            const target = e.target.closest('[title], [data-title]');
             if (target) {
                 if (target.id === 'shareButton' && target.style.display === 'none') return;
-                
                 const text = target.getAttribute('title') || target.getAttribute('data-title');
-                
                 if (text) {
                     target.setAttribute('data-title', text);
                     target.removeAttribute('title');
-                    
                     tooltip.innerText = text;
                     tooltip.style.opacity = '1';
                 }
@@ -383,24 +273,11 @@
 
         document.addEventListener('mouseout', (e) => {
             const target = e.target.closest('[data-title]');
-            if (target) {
-                tooltip.style.opacity = '0';
-            }
+            if (target) tooltip.style.opacity = '0';
         });
 
-        // Hide tooltip on mouse click
-        document.addEventListener('mousedown', (e) => {
-            if (e.target.tagName === 'SELECT' || e.target.closest('.inline-dropdown, .nav-dropdown')) {
-                tooltip.style.opacity = '0';
-            }
-        });
-		
-		// Hide tooltip on keyboard focus
-		document.addEventListener('focusin', (e) => {
-            if (e.target.tagName === 'SELECT' || e.target.closest('.inline-dropdown, .nav-dropdown')) {
-                tooltip.style.opacity = '0';
-            }
-        });
+        // Instant hide when clicking anything
+        document.addEventListener('mousedown', () => { tooltip.style.opacity = '0'; });
     }
 </script>
 </body>
