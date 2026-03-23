@@ -8,13 +8,11 @@
 	
 	<meta name="description" content="A tool to visualize what global funding—like the cost of war or wealth taxes—could provide for healthcare, education, and the environment.">
 	<meta property="og:site_name" content="What Do You Want?">
-	
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://b-ricked.github.io/what-do-you-want/">
 	<meta property="og:title" content="What Do You Want? - Funding Trade-off Calculator">
 	<meta property="og:description" content="Calculate what billions in funding could build. Compare the cost of war to hospitals, childcare, forest restoration, etc.">
 	<meta property="og:image" content="https://b-ricked.github.io/what-do-you-want/pictures/OG.png">
-
 	<meta property="twitter:card" content="summary_large_image">
 	<meta property="twitter:url" content="https://b-ricked.github.io/what-do-you-want/">
 	<meta property="twitter:title" content="What Do You Want?">
@@ -60,7 +58,7 @@
 			font-size: 1.4rem;  
 			line-height: 1.3;   
 			display: inline-block; 
-			margin-bottom: 10px; 
+			margin-bottom: 0px; 
 		}
 
 		/* LIST STYLING: Centered text with no bullets */
@@ -90,13 +88,14 @@
 			padding: 8px;
 			font-size: 1.25rem;
 			font-weight: bold;
-			margin-bottom: 22px;
+			margin-bottom: 30px;
 			cursor: pointer;
 			border-radius: 6px;
 			border: 1px solid #bbb;
 			background-color: white;
 		}
 		
+		/* Custom Tooltip Styling */
 		.custom-tooltip {
 			position: fixed;
 			padding: 8px 12px;
@@ -120,7 +119,7 @@
 <body>
 	<div id="tooltip" class="custom-tooltip"></div>
 
-    <h1>What could we have
+	<h1>What could we have
         <select class="inline-dropdown" id="costSelector" onchange="updatePage()" title="Change the source of funding">
             <option value="War">instead of war?</option>
             <option value="PAC">instead of super-PACs?</option>
@@ -128,7 +127,7 @@
         </select>
     </h1> 
 
-    <select class="nav-dropdown" id="careSelector" onchange="updatePage()" title="Choose a category to see the impact">
+	<select class="nav-dropdown" id="careSelector" onchange="updatePage()" title="Choose a category to see the impact">
         <option value="" disabled selected>What do you care about?</option>
         <option value="hospitals">Hospitals</option>
         <option value="healthCare">Health Care</option>
@@ -142,16 +141,16 @@
 		<div id="dynamic-content-section" class="content-section" style="display:none;"></div>
 	</div>
 	
-    <div style="margin-top: 22px; margin-bottom: 13px;">
+    <div style="margin-top: 42px; margin-bottom: 42px;">
 		<button id="shareButton" onclick="copyResults()" style="display:none;" title="Copies the results in plain English so you can paste the results anywhere!">
 			Copy & Share These Results 🔗
 		</button>
 	</div>
 
-    <div style="margin-top: 30px; min-height: 40px;">
+	<div style="margin-top: 10px; min-height: 20px;">
 		<a id="imageSourceLink" href="#" target="_blank" title="View the original source for this data" style="color: #7f8c8d; font-size: 0.85rem; text-decoration: underline; display: none; line-height: 1.2;" ></a>
 	</div>
-	<div style="margin-top: 0px; min-height: auto; margin-bottom: 13px;"> 
+	<div style="margin-top: 0px; min-height: auto; margin-bottom: 5px;"> 
 		<img id="dynamicImage" src="pictures/costOfWar.png" alt="Visual Representation"> 
 	</div>
 
@@ -168,12 +167,35 @@
 	</footer>
 	
 <script>
+	/* =========================================================================
+	   DATA DICTIONARY 
+	   ========================================================================= */
+
+	/* FUNDING DATA: Represents the pool of money available.
+		To add a new one, copy an existing line and change the values:
+		- fund: Total amount of money (number, no commas).
+		- message: The bold text shown in the results (e.g., "1 day of war").
+		- measure: The unit of time used for the "extra years" calculation (e.g., "day", "cycle").
+		- img: The path to the picture you want to show.
+		- linkUrl & linkText: Where the data came from.
+	*/
     const fundingData = {
         War: { fund: 2000000000, message: "1 day of war", measure: "day", img: "pictures/costOfWar.png", linkUrl: "https://www.csis.org/analysis/iran-war-cost-estimate-update-113-billion-day-6-165-billion-day-12", linkText: "Over 12 billion spent on the first 6 days- Source: CSIS" },
         PAC: { fund: 5000000000, message: "1 campaign cycle", measure: "cycle", img: "pictures/PAC.png", linkUrl: "https://www.opensecrets.org/outside-spending/super_pacs", linkText: "$5 Billion spent on super-PACS in 2024- Source: OpenSecrets.org" },
         tax: { fund: 442000000000, message: "1 year of wealth tax", measure: "year", img: "pictures/wealthTax.png", linkUrl: "https://www.sanders.senate.gov/wp-content/uploads/Wealth-Tax-Bill-Summary.pdf", linkText: "~$442 Billion in annual revenue. Only taxing wealth over $1 Billion- Source: Senate Wealth Tax Proposals" }
     };
 
+	/* CATEGORY DATA: Represents what you are buying with the money.
+		To add a standard category, copy an existing standard line:
+		- type: 'standard' (Uses the math function below to calculate buildings and staff).
+		- cost: Price to build ONE unit (e.g., $50,000,000 for a hospital).
+		- staff: Number of workers needed per unit.
+		- sal: Average yearly salary per worker.
+		- cap: Capacity (e.g., 50 beds).
+		- isMillion: Set to true if capacity is huge (like 1.5 million animals) to format correctly.
+		- buildText / verbCap / capText / staffText: Words to make the sentence read naturally.
+		NOTE: Environment and HealthCare use completely custom math formulas, hence their separate types.
+	*/
     const categoryData = {
         hospitals: { type: 'standard', cost: 50000000, staff: 200, sal: 83000, cap: 50, isMillion: false, buildText: "new hospitals", verbCap: "Providing", capText: "hospital beds", staffText: "medical professionals" },
         childcare: { type: 'standard', cost: 1100000, staff: 7, sal: 32000, cap: 70, isMillion: false, buildText: "new daycare centers", verbCap: "Serving", capText: "children", staffText: "workers" },
@@ -183,10 +205,15 @@
         healthCare: { type: 'healthCare' }
     };
 
+	/* =========================================================================
+	   CORE LOGIC & MATH
+	   ========================================================================= */
+
     function updatePage() {
 		const costSelector = document.getElementById('costSelector');
 		const careSelector = document.getElementById('careSelector');
 		
+		// Adjust dropdown widths automatically based on text length
 		resizer(costSelector);
 		resizer(careSelector);
 		
@@ -195,16 +222,19 @@
         const contentContainer = document.getElementById('dynamic-content-section');
         const currentSource = fundingData[costSelector.value];
 
+		// Update image and link based on funding source chosen
         displayImg.src = currentSource.img;
         sourceLink.href = currentSource.linkUrl;
         sourceLink.innerHTML = currentSource.linkText;
 
+		// If no category is chosen yet, hide the results
 		if (!careSelector.value) {
             sourceLink.style.display = "none";
             contentContainer.style.display = "none";
             return;
         }
 
+		// Reveal hidden elements once a valid selection is made
         document.getElementById('shareButton').style.display = "inline-block";
         displayImg.classList.add('image-visible');
         sourceLink.style.display = "inline-block"; 
@@ -212,18 +242,21 @@
 
         const currentCare = categoryData[careSelector.value];
         let generatedHTML = "";
+		
+		// Route the calculation to the correct math function based on 'type'
         if (currentCare.type === 'standard') generatedHTML = buildStandardHTML(currentSource.fund, currentSource.message, currentSource.measure, currentCare);
         else if (currentCare.type === 'environment') generatedHTML = buildEnvironmentHTML(currentSource.fund, currentSource.message);
         else if (currentCare.type === 'healthCare') generatedHTML = buildHealthCareHTML(currentSource.fund, currentSource.message);
 
         contentContainer.innerHTML = generatedHTML;
 
-        // FIX: Force the dropdown to lose focus so the tooltip works again immediately
+        // FIX: Force the dropdown to lose focus so the tooltip works again immediately after clicking
         if (document.activeElement.tagName === 'SELECT') {
             document.activeElement.blur();
         }
     }
 
+	// Handles math for standard buildings/staffing (Hospitals, Shelters, etc.)
     function buildStandardHTML(fund, message, measure, careData) {
 		let unitTotal = careData.cost + (careData.staff * careData.sal);
 		let built = Math.floor(fund / unitTotal);
@@ -240,41 +273,51 @@
                 <ul><li>${careData.verbCap} ${capStr} ${careData.capText}.</li><li>Employing ${staffStr} ${careData.staffText}.</li><li>Every additional <span class="display-box2">${measure}</span> could pay those salaries for ${yrsStr} more years.</li></ul>`;
 	}
 
+	// Custom math exclusively for the Environment calculation
     function buildEnvironmentHTML(fund, message) {
         let totalTrees = fund / 2;
         return `<p class="section-header"><strong><span class="display-box">${message}</span> could plant ${formatBigNumber(totalTrees)} trees.</strong></p>
                 <ul><li>Restoring ${Math.round(totalTrees / 500).toLocaleString()} acres of forest.</li><li>That is ${Math.round((totalTrees / 500) * 0.00156).toLocaleString()} square miles of trees.</li></ul>`;
     }
 
+	// Custom math exclusively for the Healthcare coverage calculation
     function buildHealthCareHTML(fund, message) {
-        return `<p class="section-header"><strong><span class="display-box">${message}</span> could cover Medicare for ${Math.round(fund / (185 * 12)).toLocaleString()} people or private insurance for ${Math.round(fund / (450 * 12)).toLocaleString()} people.</strong></p>`;
+        return `<p class="section-header"><strong><span class="display-box">${message}</span> could cover Medicare for ${Math.round(fund / (185 * 12)).toLocaleString()} people<br>or private insurance for ${Math.round(fund / (450 * 12)).toLocaleString()} people.</strong></p>`;
     }
 
+	// Helper to make giant numbers readable (e.g. 1.2 Billion instead of 1,200,000,000)
     function formatBigNumber(num) {
         if (num >= 1000000000) return (num / 1000000000).toFixed(1) + " Billion";
         if (num >= 1000000) return (num / 1000000).toFixed(1) + " Million";
         return num.toLocaleString();
     }
 
+	// Runs when the page first loads
     window.onload = () => { updatePage(); };
 	
+	/* =========================================================================
+	   UI & INTERACTION FUNCTIONS
+	   ========================================================================= */
+
+	// Formats the text to prevent social media from hiding it under a "See more..." link
 	function copyResults() {
 		const activeSection = document.getElementById('dynamic-content-section');
 		
-		// Grab the text and replace all the line breaks with a bullet and space
+		// Grab the raw text and replace line breaks with bullets so it copies as a single paragraph
 		let rawText = activeSection.innerText.trim();
 		let compressedText = rawText.replace(/\n+/g, ' • ');
 		
-		// Build the final string to copy
-		const shareString = `Did you know? ${compressedText}\n\nCalculate your own at: https://b-ricked.github.io/what-do-you-want/`;
+		// Build the final string to copy (Added a lightbulb emoji to make it pop)
+		const shareString = `Did you know? ${compressedText}\n\nSource: https://b-ricked.github.io/what-do-you-want/`;
 		
 		navigator.clipboard.writeText(shareString).then(() => {
 			const btn = document.getElementById('shareButton');
-			btn.innerText = "Results Copied to Clipboard! ✅";
-			setTimeout(() => { btn.innerText = "Copy & Share These Results 🔗"; }, 5000);
+			btn.innerText = "Results Copied! ✅";
+			setTimeout(() => { btn.innerText = "Copy & Share These Results 🔗"; }, 4000);
 		});
 	}
 
+	// Magic function that forces the HTML <select> element to fit the size of the chosen text
 	function resizer(el) {
 		const tempSpan = document.createElement("span");
 		tempSpan.style.visibility = "hidden"; tempSpan.style.position = "absolute"; tempSpan.style.whiteSpace = "pre";
@@ -285,6 +328,7 @@
 		document.body.removeChild(tempSpan);
 	}
 	
+	/* Custom Tooltip Logic (Only active on devices with a mouse) */
 	const tooltip = document.getElementById('tooltip');
 
     if (window.matchMedia("(hover: hover)").matches) {
@@ -315,7 +359,7 @@
             if (target) tooltip.style.opacity = '0';
         });
 
-        // Hide tooltip instantly when clicking (handles the moment the dropdown opens)
+        // Hide tooltip instantly when clicking
         document.addEventListener('mousedown', () => { tooltip.style.opacity = '0'; });
     }
 </script>
