@@ -53,7 +53,7 @@
 			font-size: 1.4rem;  
 			line-height: 1.3;   
 			display: inline-block; 
-			margin-bottom: 10px; 
+			margin-bottom: 0px; 
 		}
 
 		/* Results List */
@@ -134,7 +134,7 @@
 		<div id="dynamic-content-section" class="content-section" style="display:none;"></div>
 	</div>
 	
-    <div style="margin-top: 35px; margin-bottom: 13px;">
+    <div style="margin-top: 35px; margin-bottom: 35px;">
 		<button id="shareButton" onclick="copyResults()" style="display:none;" title="Copies results to your clipboard for easy social media sharing!">
 			Copy & Share These Results 🔗
 		</button>
@@ -163,9 +163,9 @@
 	   img: The local path to the image for that source.
 	*/
     const fundingData = {
-        War: { fund: 2000000000, message: "1 day of war", measure: "day", img: "pictures/costOfWar.png", linkUrl: "https://example.com", linkText: "Source: CSIS" },
-        PAC: { fund: 5000000000, message: "1 campaign cycle", measure: "cycle", img: "pictures/PAC.png", linkUrl: "https://example.com", linkText: "Source: OpenSecrets" },
-        tax: { fund: 442000000000, message: "1 year of wealth tax", measure: "year", img: "pictures/wealthTax.png", linkUrl: "https://example.com", linkText: "Source: Senate Proposals" }
+        War: { fund: 2000000000, message: "1 day of war", measure: "day", img: "pictures/costOfWar.png", linkUrl: "https://example.com", linkText: "$2 billion spent per day on first 6 days- Source: CSIS" },
+        PAC: { fund: 5000000000, message: "1 campaign cycle", measure: "cycle", img: "pictures/PAC.png", linkUrl: "https://example.com", linkText: "$5 billion spent on Super-Pacs in 2024 cycle- Source: OpenSecrets" },
+        tax: { fund: 442000000000, message: "1 year of wealth tax", measure: "year", img: "pictures/wealthTax.png", linkUrl: "https://example.com", linkText: "By placing a 5% tax only on wealth above $1 billion,<br> the country would gain $442 billion every year.- Source: Senate Proposals" }
     };
 
 	/* CATEGORY DATA
