@@ -67,7 +67,20 @@
 			border: 1px solid #bbb;
 			border-radius: 6px;
 			cursor: pointer;
-			padding: 4px 8px;
+			padding: 4px 4px;
+		}
+		/* Mobile-specific adjustment */
+		@media (max-width: 600px) {
+			.inline-dropdown {
+				font-size: 1.5rem; /* Much more manageable on a phone */
+				margin-top: 10px;
+				margin-bottom:0px;
+				
+			}
+			
+			h1 {
+				font-size: 1.5rem; /* Keeps the heading proportional to the dropdown */
+			}
 		}
 		
 		.nav-dropdown {
@@ -147,17 +160,23 @@
 		<img id="dynamicImage" src="pictures/costOfWar.png" alt="Visual Representation"> 
 	</div>
 
-    <footer style="margin-top: 0px; padding: 0; border-top: 1px solid #ddd; width: 100%; max-width: 600px;">
-		<p style="margin-top: 5px;"> 
-		   <a href="pages/sources.html">Sources</a> - <a href="pages/support.html">Feedback</a> - <a href="https://www.buymeacoffee.com/cO7F3F62po" target="_blank">Support</a> - <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Complaints</a>
-		</p>
-	</footer>
+    <footer style="margin-top: 0px; margin-bottom: 0px; padding: 0; border-top: 1px solid #ddd; width: 100%; max-width: 600px;">
+    <p style="margin-top: 5px; margin-bottom: 8px;"> 
+       <a href="pages/sources.html" title="View our data citations">Sources</a> - 
+       <a href="pages/support.html" title="What do you think we should add/ what could we do better">Feedback</a> - 
+       <a href="https://www.buymeacoffee.com/cO7F3F62po" target="_blank" title="Support us">Buy Me a Coffee</a> - 
+       <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" title="Submit a complaint">Complaints</a>
+    </p>
+	
+	<P style= "margin-top: 0px; font-size: 0.75rem; color: #b1b1b1;"> I have no afiliation with anyone. There is no profit.</p> 
+</footer>
 	
 <script>
 	/* DEVELOPER'S DATA DICTIONARY 
 	*/
 
 	/* FUNDING DATA
+	To add a new one, copy a "standard" block. and add a line to the dropdown above
 	   fund: The raw dollar amount.
 	   measure: Used for the "Every additional [day/cycle/year]" sentence.
 	   img: The local path to the image for that source.
@@ -169,7 +188,7 @@
     };
 
 	/* CATEGORY DATA
-	   To add a new one, copy a "standard" block.
+	   To add a new one, copy a "standard" block. and add a line to the dropdown above
 	   cost: Building/Infrastructure cost per unit.
 	   staff: Number of people hired per unit.
 	   sal: Yearly salary for those people.
@@ -235,6 +254,8 @@
         return `<p class="section-header"><strong>${message} could build ${builtStr} ${careData.buildText} and staff them for a year.</strong></p>
                 <ul><li>${careData.verbCap} ${capStr} ${careData.capText}.</li><li>Employing ${(built * careData.staff).toLocaleString()} ${careData.staffText}.</li><li>Every additional ${measure} could pay those salaries for ${Math.floor(fund / (built * careData.staff * careData.sal)).toLocaleString()} more years.</li></ul>`;
 	}
+	
+	
 
 	function buildEnvironmentHTML(fund, message) {
 		let totalTrees = fund / 2;
@@ -249,6 +270,8 @@
 					<li>That is ${sqMiles} square miles of trees.</li>
 				</ul>`;
 	}
+	
+	
 	function formatBigNumber(num) {
         if (num >= 1000000000) return (num / 1000000000).toFixed(1) + " Billion";
         if (num >= 1000000) return (num / 1000000).toFixed(1) + " Million";
@@ -258,7 +281,13 @@
     function buildHealthCareHTML(fund, message) {
 		let medicare = Math.round(fund / (185 * 12)).toLocaleString();
 		let privateIns = Math.round(fund / (450 * 12)).toLocaleString();
-		return `<p class="section-header"><strong>${message} could cover Medicare for ${medicare} people<br>or Private Insurance for ${privateIns} people.</strong></p>`;
+		let percentCovered= Math.round(((fund/(185*12))/69000000)*1000);
+		percentCovered=(percentCovered/10).toLocaleString();
+		return `<p class="section-header"><strong>${message} could cover Medicare for ${medicare} people for a year.</strong></p>
+				<ul>
+					<li>or Private Insurance for ${privateIns} people.</li>
+					<li>${percentCovered}% of medicare recipients.</li>
+				<ul>`;
 	}
 
 	/* UTILITY FUNCTIONS 
