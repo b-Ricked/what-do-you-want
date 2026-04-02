@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/svg+xml" href="pictures/bentSword.svg">
@@ -14,6 +15,9 @@
 	<meta property="og:description" content="Calculate what billions in funding could build. Compare the cost of war to hospitals, childcare, forest restoration, etc.">
 	<meta property="og:image" content="https://b-ricked.github.io/what-do-you-want/pictures/OG.png">
 	<meta property="twitter:card" content="summary_large_image">
+	
+	<script data-goatcounter="https://b-ricked.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
 
 <style>
 		/* LAYOUT & THEMING 
@@ -241,8 +245,16 @@
     <p style="margin-top: 8px; margin-bottom: 8px;"> 
        <a href="pages/sources.html" title="View our data citations">Sources</a> - 
        <a href="pages/support.html" title="What do you think we should add/ what could we do better">Feedback</a> - 
-	   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" title="Submit a complaint">Complaints</a> -
-       <a href="https://www.buymeacoffee.com/cO7F3F62po" target="_blank" title="Support us">Buy Me a Coffee</a>
+	   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" 
+		title="Submit a complaint" 
+		onclick="window.goatcounter.count({path: 'click-complaints', event: true})">
+		Complaints
+		</a> -
+		<a href="https://www.buymeacoffee.com/cO7F3F62po" target="_blank" 
+		title="Support us" 
+		onclick="window.goatcounter.count({path: 'click-coffee', event: true})">
+		Buy Me a Coffee
+		</a>
        
     </p>
 	
@@ -253,6 +265,8 @@
 	let fundingData = {};
 	let categoryData = {};
 	let specialData = {};
+
+	
 
 	async function loadData() {
 		try {
@@ -429,6 +443,21 @@
 		const costSel = document.getElementById('costSelector');
 		const careSel = document.getElementById('careSelector');
 		resizer(costSel); resizer(careSel);
+
+		// --- GOATCOUNTER BLOCK ---
+    if (window.goatcounter && window.goatcounter.count) {
+        // Only track if a category has been picked (ignores the initial placeholder)
+        if (careSel.value !== "") {
+            window.goatcounter.count({
+                path:  'view-' + costSel.value + '-vs-' + careSel.value,
+                title: 'Funding: ' + costSel.options[costSel.selectedIndex].text + 
+                       ' | Category: ' + careSel.options[careSel.selectedIndex].text,
+                event: true
+            });
+        }
+    }
+    // ----------------------------
+    // ----------------------------------
 		
 		const source = fundingData[costSel.value];
 		const careKey = careSel.value;
@@ -539,7 +568,16 @@
 	*/
 
 	// Compression fix for social media: replaces newlines with dots
-	function copyResults() {
+		function copyResults() {
+			// --- ADD GOATCOUNTER PING HERE ---
+		if (window.goatcounter && window.goatcounter.count) {
+			window.goatcounter.count({
+				path: 'click-share', 
+				title: 'User clicked Share Button',
+				event: true
+			});
+		}
+		// ---------------------------------
 		const activeSection = document.getElementById('dynamic-content-section');
 		let compressedText = activeSection.innerText.trim().replace(/\n+/g, ' • ');
 		const shareString = `💡 Did you know? ${compressedText}\n\nSource: https://b-ricked.github.io/what-do-you-want/`;
