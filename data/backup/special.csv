@@ -1,0 +1,6 @@
+_key,environment,label,Environment,msg,txt,could plant,mult,0.5,txt,trees,bp,txt,That would cover,mult,0.001,txt,acres,bp,txt,or,mult,0.0000015625,txt,square miles,end
+_key,healthCare,label,Health Care,msg,txt,would cover ,mult,0.0004504504505,txt,people on medicare for a year,end,,,,,,,,,,,,,,
+_key,homeless,label,Homeless,msg,txt,could build,mult,0.00002,txt,tiny homes for the homeless,bp,txt,housing over,mult,0.00002,txt,people,bp,txt,That's,mult,0.000000002592419765,txt,percent of homeless Americans,end
+_key,infrastructure,label,Infrastructure,msg,txt,could repair,mult,0.0000006666666667,txt,bridges,bp,txt,or pave,mult,0.0000008333333333,txt,miles of road,end,,,,,,,
+_key,edu,label,Education,msg,txt,could pay in state tuition for ,mult,0.00008620689655,txt,4 year degrees,end,,,,,,,,,,,,,,
+_key,food,label,Food Security,msg,txt,could cover food stamps for ,mult,0.005347593583,txt,people for a month,bp,txt,or,mult,0.0004456327986,txt,people for a year,end,,,,,,,
