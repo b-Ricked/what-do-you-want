@@ -73,6 +73,8 @@
         }
 
         .submit-btn {
+            display: block;      /* Allows margin: auto to work */
+            margin: 20px auto;   /* 20px top/bottom, auto left/right to center */
             background-color: #3498db; 
             color: white;
             padding: 12px 20px;
@@ -82,6 +84,7 @@
             font-size: 1.1rem;
             font-weight: bold;
             transition: background-color 0.3s ease;
+            width: fit-content;  /* Ensures the button only takes up as much space as the text */
         }
 
         .submit-btn:hover {
@@ -90,9 +93,65 @@
 
         footer {
             text-align: center;
-            margin-top: 50px;
+            margin-top: 10px;
             font-size: 0.85rem;
             color: #bdc3c7;
+        }
+        /* DARK MODE COLORS */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1a1a1a; /* Deep charcoal background */
+                color: #e0e0e0; /* Off-white text for readability */
+            }
+
+            h1 {
+                color: #f9f9f9;
+                border-bottom-color: #4facfe; /* Slightly brighter blue for dark mode */
+            }
+
+            .support-container {
+                background: #2d2d2d; /* Darker gray card */
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+                color: #e0e0e0;
+            }
+
+            /* Form Fields */
+            .form-group label {
+                color: #bbbbbb;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            select,
+            textarea {
+                background-color: #3d3d3d;
+                border: 1px solid #555;
+                color: #ffffff;
+            }
+
+            input:focus,
+            select:focus,
+            textarea:focus {
+                border-color: #4facfe;
+                outline: none;
+            }
+
+            /* Placeholder text color */
+            ::placeholder {
+                color: #888;
+            }
+
+            .submit-btn {
+                background: #4facfe; /* Brighter blue button */
+            }
+
+            .submit-btn:hover {
+                background: #00f2fe;
+            }
+
+            footer p {
+                color: #888;
+            }
         }
     </style>
 </head>

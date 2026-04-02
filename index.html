@@ -200,6 +200,12 @@
 				/* It will crop the edges slightly if the aspect ratio doesn't match */
 				object-fit: contain;
 			}
+			#special-math {
+				max-width: 600px; /* Adjust this to match your image's max-width */
+				margin: 0 auto;   /* Keeps the text centered */
+				line-height: 1.5; /* Makes multi-line text easier to read */
+				text-align: center;
+			}
 		}
 </style>
 </head>
@@ -224,7 +230,7 @@
 		</button>
 	</div>
 
-    <div style="margin-top: 10px; min-height: 20px;">
+    <div style="margin-top: 10px; min-height: 20px; max-width: 600px;">
 		<a id="imageSourceLink" href="#" target="_blank" title="View the data source" style="color: #7f8c8d; font-size: 0.95rem; text-decoration: underline; display: none; line-height: 1.2;" ></a>
 	</div>
 	<div style="margin-top: 5px; min-height: auto; margin-bottom: 5px;"> 
