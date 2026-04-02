@@ -166,7 +166,7 @@
             try {
                 // Updated path and case-sensitivity
                 const response = await fetch('../data/sources.csv');
-                if (!response.ok) throw new Error("Could not find Sources.csv");
+                if (!response.ok) throw new Error("Could not find sources.csv");
                 
                 const data = await response.text();
                 const container = document.getElementById('source-container');

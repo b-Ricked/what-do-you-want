@@ -1,5 +1,5 @@
 _key,label,cost,staff,sal,cap,buildText,verbCap,capText,staffText
-hospitals,Hospitals,50000000,200,83000,50,new hospitals,Providing,hospital beds,medical professionals
-childcare,Child Care,1100000,7,32000,70,daycare centers,Serving,children,workers
-animals,Animals,1000000,8,30000,1500,animal shelters,Serving,animals,shelter workers
-elderly,Elderly Care,12000000,40,45000,80,elderly facilities,Housing,seniors,caregivers
+hospitals,Hospitals,"$50,000,000.00",200,"$83,000.00",50,new hospitals,Providing,hospital beds,medical professionals
+childcare,Child Care,"$500,000.00",7,"$32,000.00",70,daycare centers,Serving,children,workers
+animals,Animals,"$750,000.00",5,"$30,000.00",500,animal shelters,Serving,animals,shelter workers
+elderly,Elderly Care,"$13,600,000.00",40,"$45,000.00",80,elderly facilities,Housing,seniors,caregivers
