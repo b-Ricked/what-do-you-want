@@ -446,17 +446,23 @@
 
 		// --- GOATCOUNTER BLOCK ---
     if (window.goatcounter && window.goatcounter.count) {
-        // Only track if a category has been picked (ignores the initial placeholder)
-        if (careSel.value !== "") {
-            window.goatcounter.count({
-                path:  'view-' + costSel.value + '-vs-' + careSel.value,
-                title: 'Funding: ' + costSel.options[costSel.selectedIndex].text + 
-                       ' | Category: ' + careSel.options[careSel.selectedIndex].text,
-                event: true
-            });
-        }
-    }
-    // ----------------------------
+		// 1. Track the Funding Source (Gas, War, etc.)
+		window.goatcounter.count({
+			path:  'fund-' + costSel.value.trim(), 
+			title: 'Funding selected: ' + costSel.options[costSel.selectedIndex].text,
+			event: true
+		});
+
+		// 2. Track the Care Category (Hospitals, Homeless, etc.)
+		if (careSel.value !== "") {
+			window.goatcounter.count({
+				path:  'care-' + careSel.value, 
+				title: 'Category selected: ' + careSel.options[careSel.selectedIndex].text,
+				event: true
+			});
+		}
+	}
+		// ----------------------------
     // ----------------------------------
 		
 		const source = fundingData[costSel.value];
