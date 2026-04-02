@@ -1,0 +1,15 @@
+{
+  "short_name": "WhatDoYouWant",
+  "name": "What Do You Want? - Funding Calculator",
+  "icons": [
+    {
+      "src": "pictures/bentSword.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ],
+  "start_url": ".",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "theme_color": "#3498db"
+}
