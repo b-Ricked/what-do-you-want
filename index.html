@@ -579,7 +579,7 @@
 		// ---------------------------------
 		const activeSection = document.getElementById('dynamic-content-section');
 		let compressedText = activeSection.innerText.trim().replace(/\n+/g, ' • ');
-		const shareString = `💡 Did you know? ${compressedText}\n\nSource: WhatDoYouCareAbout.org`;
+		const shareString = `💡 Did you know? ${compressedText}\n\nSource: https://WhatDoYouCareAbout.org`;
 		
 		navigator.clipboard.writeText(shareString).then(() => {
 			const btn = document.getElementById('shareButton');
