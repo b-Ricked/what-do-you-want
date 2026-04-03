@@ -5,18 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/svg+xml" href="pictures/bentSword.svg">
-    <title>What Do You Want?</title>
+    <title>What Do You Care About?</title>
 	
 	<meta name="description" content="A tool to visualize what global funding—like the cost of war or wealth taxes—could provide for healthcare, education, and the environment.">
-	<meta property="og:site_name" content="What Do You Want?">
+	<meta property="og:site_name" content="What Do You Care About??">
 	<meta property="og:type" content="website">
-	<meta property="og:url" content="https://b-ricked.github.io/what-do-you-want/">
-	<meta property="og:title" content="What Do You Want? - Funding Trade-off Calculator">
+	<meta property="og:url" content="https://whatdoyoucareabout.org/">
+	<meta property="og:title" content="What Do You Care About? - Funding Trade-off Calculator">
 	<meta property="og:description" content="Calculate what billions in funding could build. Compare the cost of war to hospitals, childcare, forest restoration, etc.">
-	<meta property="og:image" content="https://b-ricked.github.io/what-do-you-want/pictures/OG.png">
+	<meta property="og:image" content="https://whatdoyoucareabout.org/pictures/OG.png">
 	<meta property="twitter:card" content="summary_large_image">
 	
-	<script data-goatcounter="https://b-ricked.goatcounter.com/count"
+	<script data-goatcounter="https://whatdoyoucareabout.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 	<link rel="manifest" href="manifest.json">
 
@@ -587,7 +587,7 @@
 		// ---------------------------------
 		const activeSection = document.getElementById('dynamic-content-section');
 		let compressedText = activeSection.innerText.trim().replace(/\n+/g, ' • ');
-		const shareString = `💡 Did you know? ${compressedText}\n\nSource: https://b-ricked.github.io/what-do-you-want/`;
+		const shareString = `💡 Did you know? ${compressedText}\n\nSource: WhatDoYouCareAbout.org`;
 		
 		navigator.clipboard.writeText(shareString).then(() => {
 			const btn = document.getElementById('shareButton');
