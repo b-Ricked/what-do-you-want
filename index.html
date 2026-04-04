@@ -7,12 +7,12 @@
 	<link rel="icon" type="image/svg+xml" href="pictures/bentSword.svg">
     <title>What Do You Care About?</title>
 	
-	<meta name="description" content="A tool to visualize what global funding—like the cost of war or wealth taxes—could provide for healthcare, education, and the environment.">
+	<meta name="description" content="A tool to calculate what global funding, like the cost of war or wealth taxes, could provide for healthcare, education, and the environment.">
 	<meta property="og:site_name" content="What Do You Care About?">
 	<meta property="og:type" content="website">
 	<meta property="og:url" content="https://whatdoyoucareabout.org/">
 	<meta property="og:title" content="What Do You Care About? - Funding Trade-off Calculator">
-	<meta property="og:description" content="Calculate what billions in funding could build. Compare the cost of war to hospitals, childcare, forest restoration, etc.">
+	<meta property="og:description" content="Calculate what global funding, like the cost of war or wealth taxes, could provide for healthcare, education, and the environment.">
 	<meta property="og:image" content="https://whatdoyoucareabout.org/pictures/OG.png">
 	<meta property="twitter:card" content="summary_large_image">
 	
@@ -231,7 +231,7 @@
 	
     <div style="margin-top: 35px; margin-bottom: 35px;">
 		<button id="shareButton" onclick="copyResults()" style="display:none;" title="Copies results to your clipboard for easy social media sharing!">
-			Copy & Share These Results 🔗
+			Copy These Results 🔗
 		</button>
 	</div>
 
@@ -245,13 +245,13 @@
     <footer style="margin-top: 0px; margin-bottom: 0px; padding: 0; border-top: 1px solid #b1b1b1; width: 100%; max-width: 600px;">
     <p style="margin-top: 8px; margin-bottom: 8px;"> 
 		<a href="pages/support.html" title="What do you think we should add/ what could we do better">Feedback</a> -
-	   <a href="https://www.buymeacoffee.com/cO7F3F62po" target="_blank" title="Support us" onclick="window.goatcounter.count({path: 'click-coffee', event: true})"> Buy Me a Coffee </a> - 
+	   <a href="https://www.buymeacoffee.com/cO7F3F62po" target="_blank" title="Support us" onclick="window.goatcounter.count({path: 'click-coffee', event: true})"> Support </a> - 
 	   <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" title="Submit a complaint" onclick="window.goatcounter.count({path: 'click-complaints', event: true})"> Complaints </a> -
 		<a href="pages/sources.html" title="View our data citations">Sources</a>
        
     </p>
 	
-	<P style= "margin-top: 0px; font-size: 0.75rem; color: #b1b1b1;"> This site has no affiliation with anyone. There is no profit unless you buy me a coffee.</p> 
+	<P style= "margin-top: 0px; font-size: 0.75rem; color: #b1b1b1;"> This site has no affiliation with anyone. All #s are clearly cited in the "Sources" page. </p> 
 	</footer>
 	
 <script>
@@ -578,8 +578,8 @@
 		}
 		// ---------------------------------
 		const activeSection = document.getElementById('dynamic-content-section');
-		let compressedText = activeSection.innerText.trim().replace(/\n+/g, ' • ');
-		const shareString = `💡 Did you know? ${compressedText}\n\nSource: https://WhatDoYouCareAbout.org`;
+		let compressedText = activeSection.innerText.trim().replace(/\n+/g, ' ');
+		const shareString = `Fun fact: ${compressedText}\n\nSource: https://WhatDoYouCareAbout.org`;
 		
 		navigator.clipboard.writeText(shareString).then(() => {
 			const btn = document.getElementById('shareButton');
